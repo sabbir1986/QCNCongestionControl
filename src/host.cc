@@ -23,14 +23,14 @@ void Host::initialize()
 		myMac[3] = 0xFF;
 		myMac[4] = 0xFF;
 		myMac[5] = getIndex();
-		EV << "Initialize Eth layer: "<< myMac[5] <<"\n";
+		EV << "Initialized Host with MAC(index)="<< myMac[5] <<"\n";
 		msgIdCnt=0;
 		decideCnt=0;
 		// init rand array for ip randomize, array will hold all adresses of all host but myself
 		// on later stages will random one of the cells.
 		int size = par("hostNum");
 		size = size -1;
-		randArr = new int[size];
+		randArr = new int[size];//this array will hold the address of all host except the current host.
 		for (int i=0,j=0; j<size; i++)
 		{
 			if (i !=myId)
@@ -68,6 +68,8 @@ void Host::handleMessage(cMessage *msg)
 void Host::processMsgFromLowerLayer(Eth_pck *packet)
 {
 	bool isMine = true;
+
+	//this checks if the packet is for me or not
 	for (unsigned int i=0;i<packet->getMacDestArraySize() && isMine;i++)
 	{
 		if (myMac[i] != packet->getMacDest(i))
@@ -76,14 +78,21 @@ void Host::processMsgFromLowerLayer(Eth_pck *packet)
 	if (isMine) // message is mine
 	{
 		if (packet->getLength() == FEEDBACK)
+		{
+		    bubble("received feedback message");
 			RL->FeedbackMsg(packet);
+		}
 		else // regular message need to pass to check if its mine. and do stuff
+		{
+		    bubble("received regular message");
 			handleRegularMsg(packet);
+		}
 		delete packet;
 	}
 	else // message is not mine, should never be here
 	{
 		// TODO do stuff
+	    bubble("received message that is not mine");
 		delete packet;
 	}
 }
