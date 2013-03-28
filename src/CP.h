@@ -10,7 +10,7 @@
 using namespace std;
 
 /*
- * This class define Conjection Point variables and function
+ * This class define Congestion Point variables and function
  */
 class CPalg
 {

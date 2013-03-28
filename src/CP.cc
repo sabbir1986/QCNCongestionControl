@@ -31,13 +31,14 @@ void CP::processSelfTimer(cMessage *msg)
 {
 	if (!strcmp(msg->getName(),"sendEvent"))
 	{
+	    //TODO check here. If fb Message queue is not empty, the program is sending a fb message
 		if (fbMsgQueue.size() !=0)
 			msgTransmit(msg, 0);
 		else
 		{
 			if (genMsgQueue.size() !=0)
 			{
-				cpPoint->popQlen(genMsgQueue[0]->getByteLength()/1000.0);//sub length from qlen
+				cpPoint->popQlen(genMsgQueue[0]->getByteLength()/1000.0);//subtract length from qlen
 				msgTransmit(msg,1);
 			}
 		}
