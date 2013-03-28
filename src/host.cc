@@ -84,7 +84,9 @@ void Host::processMsgFromLowerLayer(Eth_pck *packet)
 		}
 		else // regular message need to pass to check if its mine. and do stuff
 		{
-		    bubble("received regular message");
+		    char print_msg[50];
+		    sprintf(print_msg,"received regular message: Pkt len=%d",packet->getLength());
+		    bubble(print_msg);
 			handleRegularMsg(packet);
 		}
 		delete packet;
