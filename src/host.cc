@@ -77,8 +77,11 @@ void Host::processMsgFromLowerLayer(Eth_pck *packet)
     }
     if (isMine) // message is mine
     {
-//		if (packet->getLength() == FEEDBACK)
-//	    if (packet->getLength() >=800)
+        char print_msg[50];
+        sprintf(print_msg, "Host.cc Pkt len=%d", packet->getLength());
+        bubble(print_msg);
+        EV<<"\n"<<print_msg;
+
         if (packet->getLength() == FEEDBACK)
         {
             bubble("received feedback message");
@@ -86,9 +89,8 @@ void Host::processMsgFromLowerLayer(Eth_pck *packet)
         }
         else // regular message need to pass to check if its mine. and do stuff
         {
-            char print_msg[50];
-            sprintf(print_msg, "received regular message: Pkt len=%d", packet->getLength());
-            bubble(print_msg);
+
+            bubble("received regular message");
             handleRegularMsg(packet);
         }
         delete packet;
