@@ -184,7 +184,11 @@ Eth_pck *CPalg::receivedFrame(Eth_pck *incomeFrame)
 	//Sampling probability is a function of FB
 	generateFbFrame = 0;
 
-	timeToMark -=incomeFrame->getByteLength()/1000.0;//length in KB
+	timeToMark -=incomeFrame->getByteLength();// Previous:timeToMark -=incomeFrame->getByteLength()/1000.0;//length in KB
+
+	//debug messages
+	sprintf(print_msg,"timeToMark=%lf",timeToMark);
+	EV<<"cPalg::receivedFrame:"<<print_msg;
 
 	if (timeToMark < 0)
 	{
@@ -212,10 +216,13 @@ Eth_pck *CPalg::receivedFrame(Eth_pck *incomeFrame)
 		{
 			pck->setMacDest(i,incomeFrame->getMacSrc(i));
 		}
-		pck->setLength(FEEDBACK+1); // a feedback message which has no src adress yet
-		pck->setByteLength(30); // TODO calculate this properly
+		pck->setLength(FEEDBACK); // a feedback message which has no src adress yet
+		pck->setByteLength(30000); // TODO calculate this properly
 		pck->encapsulate(pckFb);
 
+		//printing debug message
+		sprintf(print_msg,"fb packet generated: packet length=%d qntzfb=%d",pck->getLength(),qntzFb);
+		EV<<"CPalg::receivedFrame:"<<print_msg;
 		/* statistics */
 		CP* temp = (CP*)fatherModul;
 		if (simTime().dbl() - temp->lastTime > temp->interval)
