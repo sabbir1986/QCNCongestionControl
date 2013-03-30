@@ -1,0 +1,12 @@
+- change queue length in dumbell to 10 from 300.
+- changed access of qlen, qeq... in CPalg clss from Protected to Public.
+- In CP.cc changed line no 215 from
+	pck->setLength(FEEDBACK+1);
+	to
+	pck->setLength(FEEDBACK);
+- Changed line 220 in CP.cc (this was the byte length of feedback messages. So, I had to change the
+	byte length of general and other messages. Changed it in Host.cc)
+	From
+	pck->setByteLength(30); // TODO calculate this properly
+	To
+	pck->setByteLength(30000); // TODO calculate this properly
