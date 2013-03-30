@@ -4,6 +4,7 @@ Define_Module(CP);
 
 void CP::initialize()
 {
+    char print_msg[100];
 	cpPoint = new CPalg((cModule*)this);
 	cpPoint->resetQlen();
 	selfEvent = new cMessage("sendEvent");
@@ -17,6 +18,8 @@ void CP::initialize()
 	 interval=par("interval");
 	 lastTime=simTime().dbl();
 	 fbCnt=0;
+	 sprintf(print_msg,"w=%d qeq=%lf qlen=%lf qlenold=%lf fb=%d",cpPoint->w,cpPoint->qeq,cpPoint->qlen,cpPoint->qlenOld,cpPoint->fb);
+	 EV<<"initializationin CPalg():"<<print_msg;
 }
 
 void CP::handleMessage(cMessage *msg)
@@ -73,6 +76,7 @@ void CP::msgTransmit(cMessage *selfMsg, int type)
 
 void CP::processMsg(Eth_pck *msg)
 {
+    char print_msg[50];
 	if (msg->getLength() == FEEDBACK)
 	{
 		fbMsgQueue.push_back(msg);
@@ -83,10 +87,16 @@ void CP::processMsg(Eth_pck *msg)
 		{
 			genMsgQueue.push_back(msg);
 			Eth_pck *fbMsg = cpPoint->receivedFrame(msg);
-			bubble("CP processMsg: Not feedback");
+			//bubble("CP processMsg: Not feedback");
+
 			if (fbMsg != NULL)
 			{
+			    bubble("CP processMsg: fb is not null");
 				send(fbMsg,"mc$o");//send my Feed Back Message back to Message controller
+			}
+			else
+			{
+			    bubble("CP ProcessMsg: fb is null");
 			}
 		}
 		else
@@ -107,10 +117,11 @@ void CP::processMsg(Eth_pck *msg)
 
 
 /*
- * Function implamentation of CPalg class
+ * Function implementation of CPalg class
  */
 CPalg::CPalg(cModule* fatherM)
 {
+    char print_msg[50];
 	fatherModul = fatherM;
 	double tempQlength = fatherModul->getAncestorPar("Q_LENGTH");
 	double tempQpercentage = fatherModul->getAncestorPar("Q_EQ_STABLE_PERCENT");
@@ -122,6 +133,8 @@ CPalg::CPalg(cModule* fatherM)
 	qlenOld =0;
 	fb = 0;
 	timeToMark = markTable[0];
+
+
 
 	/* statistic init */
 	//pckLoss = 0;
@@ -153,8 +166,10 @@ unsigned int CPalg::quantitize(int toQuan)
  */
 Eth_pck *CPalg::receivedFrame(Eth_pck *incomeFrame)
 {
+    char print_msg[100];
 	double nextPeriod;
 	double rnd;
+
 
 	fb = (qeq - qlen)-w*(qlen -qlenOld);
 	if (fb < -qeq*(2*w+1))
@@ -162,6 +177,8 @@ Eth_pck *CPalg::receivedFrame(Eth_pck *incomeFrame)
 	else if (fb>0)
 		fb=0;
 
+	sprintf(print_msg,"CPalg::receivedFrame qlen=%lf qeq=%lf w=%d fb=%d",qlen,qeq,w,fb);
+	EV<<print_msg;
 	qntzFb = quantitize(fb);
 
 	//Sampling probability is a function of FB

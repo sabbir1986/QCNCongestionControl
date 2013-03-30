@@ -4,7 +4,7 @@ network Dumbell
 {
     parameters:
         int W = default(2);
-        double Q_LENGTH =  default(300);//Que Length
+        double Q_LENGTH =  default(10);//Que Length
         int Q_EQ_STABLE_PERCENT =  default(20);//Q_QE calculated from Q_LENGTH and Q_EQ_STABLE_PERSENT
         double BC_LIMIT =  default(150);
         double TIMER_PERIOD =  default(10);//mSec

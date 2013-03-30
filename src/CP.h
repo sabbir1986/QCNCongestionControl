@@ -14,7 +14,7 @@ using namespace std;
  */
 class CPalg
 {
- protected:
+ public:
 	double qeq;
 	double qlen;
 	double tLoss;//TODO
