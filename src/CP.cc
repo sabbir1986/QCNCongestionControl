@@ -5,7 +5,7 @@ Define_Module(CP);
 void CP::initialize()
 {
 	cpPoint = new CPalg((cModule*)this);
-	cpPoint->resQlen();
+	cpPoint->resetQlen();
 	selfEvent = new cMessage("sendEvent");
 
 	/* for statistics */
@@ -83,6 +83,7 @@ void CP::processMsg(Eth_pck *msg)
 		{
 			genMsgQueue.push_back(msg);
 			Eth_pck *fbMsg = cpPoint->receivedFrame(msg);
+			bubble("CP processMsg: Not feedback");
 			if (fbMsg != NULL)
 			{
 				send(fbMsg,"mc$o");//send my Feed Back Message back to Message controller
@@ -270,7 +271,7 @@ void CPalg::popQlen(double len)
 /*
  * add len to qlen
  */
-void CPalg::resQlen()
+void CPalg::resetQlen()
 {
 	qlen =0;
 }

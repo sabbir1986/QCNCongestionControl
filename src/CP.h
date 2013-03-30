@@ -41,7 +41,7 @@ class CPalg
 	virtual unsigned int quantitize(int toQuan);
 	virtual bool addQlen(double len);
 	virtual void popQlen(double len);
-	virtual void resQlen();
+	virtual void resetQlen();
 };
 double CPalg::markTable[8]={150.0,75.0,50.0,37.5,30.0,25.0,21.5,18.5};
 

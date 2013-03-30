@@ -1,4 +1,4 @@
 # Partial Tkenv config file -- see $HOME/.tkenvrc as well
 inspector "Dumbell" "Dumbell" "2" "565x342+52+52:normal"
-inspector "Dumbell.switch[0]" "Switch" "2" "565x342+671+363:normal"
+inspector "Dumbell.switch[0]" "Switch" "2" "565x342+686+3:normal"
 
