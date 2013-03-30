@@ -1,5 +1,3 @@
-
-
 #ifndef __CNGCONTROL_MSGCNTRL_H_
 #define __CNGCONTROL_MSGCNTRL_H_
 #define MAC_SIZE 6

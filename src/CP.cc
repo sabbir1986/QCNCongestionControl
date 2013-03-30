@@ -65,7 +65,7 @@ void CP::msgTransmit(cMessage *selfMsg, int type)
 	cChannel* cha= gate("out")->getTransmissionChannel();
 
 //	if (getParentModule()->getIndex()==0 && getIndex()==0)
-//		EV << "the time is: "<< simTime() << "line is not busy scheduled to: "<< cha->getTransmissionFinishTime() << endl;
+//	EV << "the time is: "<< simTime() << "line is not busy scheduled to: "<< cha->getTransmissionFinishTime() << endl;
 	scheduleAt(cha->getTransmissionFinishTime(),selfMsg);
 
 }
