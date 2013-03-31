@@ -61,6 +61,11 @@ void Host::handleMessage(cMessage *msg)
     else
         // message arrived from switch
         processMsgFromLowerLayer(check_and_cast<Eth_pck *>(msg));
+
+    //debug message
+    char print_msg[100];
+    sprintf(print_msg,"handleMessage: cRate=%lf tRate=%lf",RL->cRate,RL->tRate);
+    EV<<"host.cc:"<<print_msg;
 }
 /*
  * Description:	this function handles messages that were received from CP

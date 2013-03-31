@@ -92,12 +92,15 @@ void CP::processMsg(Eth_pck *msg)
 
             if (fbMsg != NULL)
             {
-                bubble("CP processMsg: fb is not null");
+                //debug message
+                sprintf(print_msg,"CP=%d:Generated Fb",getIndex());
+                bubble(print_msg);
+
                 send(fbMsg, "mc$o"); //send my Feed Back Message back to Message controller
             }
             else
             {
-                bubble("CP ProcessMsg: fb is null");
+                //bubble("CP ProcessMsg: fb is null");
             }
         }
         else
@@ -172,6 +175,7 @@ Eth_pck *CPalg::receivedFrame(Eth_pck *incomeFrame)
     else if (fb > 0)
         fb = 0;
 
+    //fb=-2;
     //debug message
     sprintf(print_msg, "\nCPalg::receivedFrame qlen=%lf qeq=%lf w=%d fb=%d", qlen, qeq, w, fb);
     EV << print_msg;
@@ -182,14 +186,10 @@ Eth_pck *CPalg::receivedFrame(Eth_pck *incomeFrame)
     generateFbFrame = 0;
 
     //debug message
-    sprintf(print_msg, "\nCPalg::receivedFrame TimeToMark=%lf incoming pkt length=%ld", timeToMark,incomeFrame->getByteLength());
+    sprintf(print_msg, "\nCPalg::receivedFrame TimeToMark=%lf incoming pkt length=%llu", timeToMark,incomeFrame->getByteLength());
     EV << print_msg;
 
     timeToMark -= incomeFrame->getByteLength(); // Previous:timeToMark -=incomeFrame->getByteLength()/1000.0;//length in KB
-
-    //debug messages
-    sprintf(print_msg, "timeToMark=%lf", timeToMark);
-    EV << "\ncPalg::receivedFrame:" << print_msg;
 
     if (timeToMark < 0)
     {
@@ -218,7 +218,7 @@ Eth_pck *CPalg::receivedFrame(Eth_pck *incomeFrame)
             pck->setMacDest(i, incomeFrame->getMacSrc(i));
         }
         pck->setLength(FEEDBACK); // a feedback message which has no src adress yet
-        pck->setByteLength(30000); // TODO calculate this properly
+        pck->setByteLength(30); // TODO calculate this properly
         pck->encapsulate(pckFb);
 
         //printing debug message

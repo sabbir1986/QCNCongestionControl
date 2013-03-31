@@ -10,3 +10,17 @@
 	pck->setByteLength(30); // TODO calculate this properly
 	To
 	pck->setByteLength(30000); // TODO calculate this properly
+	
+- changed line 175 of CP.cc
+	added fb=-2; 
+	
+- Changed timeToMark in CP.cc @line 189
+	From
+	timeToMark -= incomeFrame->getByteLength()/1000; 
+	to
+	timeToMark -= incomeFrame->getByteLength();
+- Changes in omnetpp.ini @line8
+	From
+	previous:Dumbell.host[*].dataLength = normal(1000,150)
+	To
+	Dumbell.host[*].dataLength = normal(100,150)

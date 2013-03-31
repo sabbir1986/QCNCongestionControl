@@ -19,7 +19,8 @@ network Dumbell
     types:
         channel Channel extends ned.DatarateChannel
         {
-                datarate = 10Gbps;
+            datarate= 100Mbps;
+                //datarate = 10Gbps;
                 //delay = 10us;
                 //ber = 1e-10;
         }
