@@ -59,6 +59,8 @@ public:
     int timerSCount;
     cModule* mySelf;
     cMessage* selfTimer;
+
+    int host_id;
 private:
     double MAX_DATA_RATE;
     double Q_EQ;
@@ -70,6 +72,7 @@ class Host: public cSimpleModule {
 public:
     simsignal_t RTTSig;
     simsignal_t dataRateSig;
+    int host_id;
 protected:
     virtual void initialize();
     virtual void handleMessage(cMessage *msg);

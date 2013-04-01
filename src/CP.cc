@@ -5,7 +5,7 @@ Define_Module(CP);
 void CP::initialize()
 {
     char print_msg[100];
-    cpPoint = new CPalg((cModule*) this);
+    cpPoint = new CPalg((cModule*) this,getIndex());
     cpPoint->resetQlen();
     selfEvent = new cMessage("sendEvent");
 
@@ -18,9 +18,11 @@ void CP::initialize()
     interval = par("interval");
     lastTime = simTime().dbl();
     fbCnt = 0;
-    sprintf(print_msg, "w=%d qeq=%lf qlen=%lf qlenold=%lf fb=%d", cpPoint->w, cpPoint->qeq, cpPoint->qlen,
+    CP_id=getIndex();
+
+    sprintf(print_msg, "CP_id=%d w=%d qeq=%lf qlen=%lf qlenold=%lf fb=%d",CP_id,cpPoint->w, cpPoint->qeq, cpPoint->qlen,
             cpPoint->qlenOld, cpPoint->fb);
-    EV << "\ninitializationin CPalg():" << print_msg;
+    EV << "\ninit CPalg():" << print_msg;
 }
 
 void CP::handleMessage(cMessage *msg)
@@ -93,7 +95,7 @@ void CP::processMsg(Eth_pck *msg)
             if (fbMsg != NULL)
             {
                 //debug message
-                sprintf(print_msg,"CP=%d:Generated Fb",getIndex());
+                sprintf(print_msg,"CP_id=%d:Generated Fb",CP_id);
                 bubble(print_msg);
 
                 send(fbMsg, "mc$o"); //send my Feed Back Message back to Message controller
@@ -120,10 +122,11 @@ void CP::processMsg(Eth_pck *msg)
 /*
  * Function implementation of CPalg class
  */
-CPalg::CPalg(cModule* fatherM)
+CPalg::CPalg(cModule* fatherM,int CP_id)
 {
     char print_msg[50];
     fatherModul = fatherM;
+    this->CP_id=CP_id;
     double tempQlength = fatherModul->getAncestorPar("Q_LENGTH");
     double tempQpercentage = fatherModul->getAncestorPar("Q_EQ_STABLE_PERCENT");
     //Initialize variables
@@ -177,7 +180,7 @@ Eth_pck *CPalg::receivedFrame(Eth_pck *incomeFrame)
 
     //fb=-2;
     //debug message
-    sprintf(print_msg, "\nCPalg::receivedFrame qlen=%lf qeq=%lf w=%d fb=%d", qlen, qeq, w, fb);
+    sprintf(print_msg, "\nCPalg::receivedFrame CP_id=%d qlen=%lf qeq=%lf w=%d fb=%d",CP_id, qlen, qeq, w, fb);
     EV << print_msg;
 
     qntzFb = quantitize(fb);
@@ -186,7 +189,7 @@ Eth_pck *CPalg::receivedFrame(Eth_pck *incomeFrame)
     generateFbFrame = 0;
 
     //debug message
-    sprintf(print_msg, "\nCPalg::receivedFrame TimeToMark=%lf incoming pkt length=%llu", timeToMark,incomeFrame->getByteLength());
+    sprintf(print_msg, "\nCPalg::receivedFrame CP_id=%d TimeToMark=%lf incoming pkt length=%llu",CP_id, timeToMark,incomeFrame->getByteLength());
     EV << print_msg;
 
     timeToMark -= incomeFrame->getByteLength(); // Previous:timeToMark -=incomeFrame->getByteLength()/1000.0;//length in KB
@@ -222,7 +225,7 @@ Eth_pck *CPalg::receivedFrame(Eth_pck *incomeFrame)
         pck->encapsulate(pckFb);
 
         //printing debug message
-        sprintf(print_msg, "fb packet generated: packet length=%d qntzfb=%d", pck->getLength(), qntzFb);
+        sprintf(print_msg, "fb packet generated: CP_id=%d packet length=%d qntzfb=%d",CP_id, pck->getLength(), qntzFb);
         EV << "\nCPalg::receivedFrame:" << print_msg;
         /* statistics */
         CP* temp = (CP*) fatherModul;

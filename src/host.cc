@@ -14,6 +14,7 @@ void Host::initialize()
     /*
      * initializing my mac adress by using the id on the parmeters on ini file
      */
+    host_id=getIndex();
     int myId = getIndex();
     myMac = new unsigned char[6];
     myMac[0] = 0xFF;
@@ -50,6 +51,8 @@ void Host::initialize()
     /* initializing variables for QCN algorithm */
 
     RL = new RP((cDatarateChannel*) gate("out")->getTransmissionChannel(), this); //TODO check deletion
+
+    RL->host_id=host_id;
 }
 /*
  * Description:	seperating the self messages and messages from lower layer i.e the channel itself
@@ -64,8 +67,8 @@ void Host::handleMessage(cMessage *msg)
 
     //debug message
     char print_msg[100];
-    sprintf(print_msg,"handleMessage: cRate=%lf tRate=%lf",RL->cRate,RL->tRate);
-    EV<<"host.cc:"<<print_msg;
+    sprintf(print_msg,"handleMessage: Host_id=%d cRate=%lf tRate=%lf",host_id,RL->cRate,RL->tRate);
+    EV<<"\nhost.cc:"<<print_msg;
 }
 /*
  * Description:	this function handles messages that were received from CP
@@ -83,7 +86,7 @@ void Host::processMsgFromLowerLayer(Eth_pck *packet)
     if (isMine) // message is mine
     {
         char print_msg[50];
-        sprintf(print_msg, "Host.cc Pkt len=%d", packet->getLength());
+        sprintf(print_msg, "Host.cc Host_id=% Pkt len=%d",host_id, packet->getLength());
         bubble(print_msg);
         EV<<"\n"<<print_msg;
 

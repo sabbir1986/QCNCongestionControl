@@ -26,6 +26,8 @@ class CPalg
 	double timeToMark;
 	cModule *fatherModul;
 
+	int CP_id;
+
 
  public:
 
@@ -35,7 +37,7 @@ class CPalg
 	//cOutVector qLenStat;
 
 	static double markTable[8];
-	CPalg(cModule *fatherM);
+	CPalg(cModule *fatherM,int CP_id);
 	~CPalg();
 	virtual Eth_pck *receivedFrame(Eth_pck *incomeFrame);
 	virtual unsigned int quantitize(int toQuan);
@@ -60,6 +62,7 @@ public:
 	double lastTime;
 	double interval;
 	int fbCnt;
+	int CP_id;
 protected:
 	CPalg *cpPoint;
 	cMessage * selfEvent;
