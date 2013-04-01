@@ -1,14 +1,14 @@
 version 2
-run General-0-20130331-16:07:23-8848
+run General-0-20130401-22:17:42-3840
 attr configname General
-attr datetime 20130331-16:07:23
+attr datetime 20130401-22:17:42
 attr experiment General
 attr inifile omnetpp.ini
 attr iterationvars ""
 attr iterationvars2 $repetition=0
 attr measurement ""
 attr network Dumbell
-attr processid 8848
+attr processid 3840
 attr repetition 0
 attr replication #0
 attr resultdir results

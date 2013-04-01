@@ -1,4 +1,5 @@
 # Partial Tkenv config file -- see $HOME/.tkenvrc as well
 inspector "Dumbell.host[0]" "Host" "3" "503x220+851+1:normal"
 inspector "Dumbell.host[5]" "Host" "3" "503x175+852+509:normal"
+inspector "Dumbell" "Dumbell" "2" "565x342+104+104:normal"
 
