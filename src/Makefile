@@ -1,12 +1,12 @@
 #
-# OMNeT++/OMNEST Makefile for QCNCongestionControl
+# OMNeT++/OMNEST Makefile for QCN_original
 #
 # This file was generated with the command:
 #  opp_makemake -f --deep
 #
 
 # Name of target to be created (-o option)
-TARGET = QCNCongestionControl$(EXE_SUFFIX)
+TARGET = QCN_original$(EXE_SUFFIX)
 
 # User interface (uncomment one) (-u option)
 USERIF_LIBS = $(ALL_ENV_LIBS) # that is, $(TKENV_LIBS) $(CMDENV_LIBS)
@@ -14,7 +14,7 @@ USERIF_LIBS = $(ALL_ENV_LIBS) # that is, $(TKENV_LIBS) $(CMDENV_LIBS)
 #USERIF_LIBS = $(TKENV_LIBS)
 
 # C++ include paths (with -I)
-INCLUDE_PATH = -I. -Iresults
+INCLUDE_PATH = -I.
 
 # Additional object and library files to link with
 EXTRA_OBJS =
@@ -101,15 +101,14 @@ msgheaders: $(MSGFILES:.msg=_m.h)
 
 clean:
 	-rm -rf $O
-	-rm -f QCNCongestionControl QCNCongestionControl.exe libQCNCongestionControl.so libQCNCongestionControl.a libQCNCongestionControl.dll libQCNCongestionControl.dylib
+	-rm -f QCN_original QCN_original.exe libQCN_original.so libQCN_original.a libQCN_original.dll libQCN_original.dylib
 	-rm -f ./*_m.cc ./*_m.h
-	-rm -f results/*_m.cc results/*_m.h
 
 cleanall: clean
 	-rm -rf $(PROJECT_OUTPUT_DIR)
 
 depend:
-	$(MAKEDEPEND) $(INCLUDE_PATH) -f Makefile -P\$$O/ -- $(MSG_CC_FILES)  ./*.cc results/*.cc
+	$(MAKEDEPEND) $(INCLUDE_PATH) -f Makefile -P\$$O/ -- $(MSG_CC_FILES)  ./*.cc
 
 # DO NOT DELETE THIS LINE -- make depend depends on it.
 $O/CP.o: CP.cc \

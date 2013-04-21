@@ -1,8 +1,5 @@
-package cngcontrol;
+package qcn_original;
 
-//
-// TODO auto-generated module
-//
 simple Host
 {
     parameters:
