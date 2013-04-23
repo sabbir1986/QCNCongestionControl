@@ -72,7 +72,13 @@ class Host: public cSimpleModule {
 public:
     simsignal_t RTTSig;
     simsignal_t dataRateSig;
+    simsignal_t fbCountSignalRP;
     int host_id;
+
+    //fb counter interval
+    int fb_cnt;
+    double fbCountInterval;
+    double lastTimeNotedFbCount;
 protected:
     virtual void initialize();
     virtual void handleMessage(cMessage *msg);

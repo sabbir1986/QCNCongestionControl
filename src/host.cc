@@ -25,6 +25,12 @@ void Host::initialize() {
     EV << "Initialized Host with MAC(index)=" << myMac[5] << "\n";
     msgIdCnt = 0;
     decideCnt = 0;
+
+    //fb count code
+    fb_cnt = 0;
+    fbCountInterval = par("fbInterval");
+    lastTimeNotedFbCount = simTime().dbl();
+
     // init rand array for ip randomize, array will hold all adresses of all host but myself
     // on later stages will random one of the cells.
     int size = par("hostNum");
@@ -330,6 +336,19 @@ void RP::FeedbackMsg(Eth_pck* msg) {
         }
     }
     delete FB;
+
+    /*
+     * statistic calculation
+     */
+    Host* currentHost = (Host*) mySelf;
+    if ((simTime().dbl() - currentHost->lastTimeNotedFbCount)
+            > currentHost->fbCountInterval) {
+        currentHost->emit(currentHost->fbCountSignalRP, currentHost->fb_cnt);
+        currentHost->fb_cnt = 1;
+        currentHost->lastTimeNotedFbCount = simTime().dbl();
+    } else {
+        currentHost->fb_cnt++;
+    }
 }
 /*
  * Description:	this function makes calculation on each frame that is about to get transmitted
